@@ -1,8 +1,6 @@
 import readyalex as read
 import shuntingyard as sy
-#from arbol import SyntacticTree
-from arbol import construir_arbol, dibujar_arbol
-#import time
+from arbol import SyntacticTree
 
 def main():
     yalex_file = 'slr-1.yal' 
@@ -13,16 +11,17 @@ def main():
         print(content)
         print("====================================================")
         print("====================================================")
-        postfix = sy.shunting_yard(content)
+        postfix = sy.infix_to_postfix(content)
         print("Postfix de la regex ================================")
         print(postfix)
         print("====================================================")
         print("====================================================")
-        print("====================================================")
         print("Generando árbol de expresión...")
-        arbol = construir_arbol(postfix)
-        dibujar_arbol(arbol, "arbol_sintactico.png")
-        print("Árbol de expresión generado y guardado como 'arbol_sintactico.png'")
+        tree = SyntacticTree(yalex_file)
+        tree.tree_construction(postfix)
+        tree.visualize_tree()
+        result = tree.left_most()
+        print("Árbol de expresión generado y guardado como 'expression_tree.png'")
         print("=====================================================")
         print("=====================================================")
 
