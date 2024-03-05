@@ -40,8 +40,10 @@ def read_yalex(yalex_file):
             if "(*" in temporary_reserved_word:
                 temporary_reserved_word = temporary_reserved_word[:-2]
                 break
+        
         regex[x] = temporary_reserved_word
 
+    clean_regex_expression = []
     for x in regex:
         if len(x) != 0:
             if x.count('"') == 2:
@@ -147,7 +149,7 @@ def read_yalex(yalex_file):
                         token_actual = token_actual[1:-1]
                         tokens.append(token_actual)
                         token_actual = ""
-                if char in ("(", ")", "*", "?", "+", "|", "."):
+                if char in ("(", ")", "*", "?", "+", "|", "·"):
                     if "'" not in token_actual:
                         if token_actual:
                             if len(token_actual) == 1:
@@ -175,27 +177,27 @@ def read_yalex(yalex_file):
             temp_expression = []
             for y in clean_functions[x][1]:
                 temp_expression.append(y)
-                temp_expression.append(".")
+                temp_expression.append("·")
             for z in range(len(temp_expression)):
                 if temp_expression[z] == "(":
-                    if temp_expression[z + 1] == ".":
+                    if temp_expression[z + 1] == "·":
                         temp_expression[z + 1] = ""
                 if temp_expression[z] == ")":
-                    if temp_expression[z - 1] == ".":
+                    if temp_expression[z - 1] == "·":
                         temp_expression[z - 1] = ""
                 if temp_expression[z] == "*":
-                    if temp_expression[z - 1] == ".":
+                    if temp_expression[z - 1] == "·":
                         temp_expression[z - 1] = ""
                 if temp_expression[z] == "|":
-                    if temp_expression[z - 1] == ".":
+                    if temp_expression[z - 1] == "·":
                         temp_expression[z - 1] = ""
-                    if temp_expression[z + 1] == ".":
+                    if temp_expression[z + 1] == "·":
                         temp_expression[z + 1] = ""
                 if temp_expression[z] == "+":
-                    if temp_expression[z - 1] == ".":
+                    if temp_expression[z - 1] == "·":
                         temp_expression[z - 1] = ""
                 if temp_expression[z] == "?":
-                    if temp_expression[z - 1] == ".":
+                    if temp_expression[z - 1] == "·":
                         temp_expression[z - 1] = ""
             temp_expression = [element for element in temp_expression if element != ""]
             clean_functions[x][1] = temp_expression[:-1]
@@ -237,7 +239,7 @@ def read_yalex(yalex_file):
         if x != "|":
             temporalNewRegex.append("(")
             temporalNewRegex.append(x)
-            temporalNewRegex.append(".")
+            temporalNewRegex.append("·")
             temporalNewRegex.append("#" + str(x))
             temporalNewRegex.append(")")
         else:

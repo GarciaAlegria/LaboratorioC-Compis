@@ -3,7 +3,7 @@ import shuntingyard as sy
 from arbol import SyntacticTree
 
 def main():
-    yalex_file = 'slr-1.yal' 
+    yalex_file = 'slr-2.yal' 
     content = read.read_yalex(yalex_file)
     if content:
         print("====================================================")
@@ -11,7 +11,7 @@ def main():
         print(content)
         print("====================================================")
         print("====================================================")
-        postfix = sy.infix_to_postfix(content)
+        postfix = sy.shunting_yard(content)
         print("Postfix de la regex ================================")
         print(postfix)
         print("====================================================")
