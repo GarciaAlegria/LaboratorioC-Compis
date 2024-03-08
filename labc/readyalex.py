@@ -149,11 +149,7 @@ def read_yalex(yalex_file):
                 if token_actual.count("'") == 2:
                     if "[" not in token_actual:
                         token_actual = token_actual[1:-1]
-                        if token_actual == '.digits':
-                            tokens.append('.')
-                            tokens.append('·')
-                            tokens.append('digits')
-                        elif token_actual == 'E':
+                        if token_actual == 'E':
                             token_actual = ord(token_actual)  # Convertir 'E' a ASCII
                         tokens.append(token_actual)
                         token_actual = ""
