@@ -45,9 +45,6 @@ class SyntacticTree:
                 
         self.root = stack.pop()
 
-
-
-
     def left_most(self):
         if self.root is None:
             return []

@@ -1,10 +1,10 @@
 def read_yalex(yalex_file):
     # Listas para almacenar funciones y expresiones regulares
-    functions = []
-    clean_functions = []
-    regex = []
-    clean_regex_expression = []
-    reserved_word = ""
+    functions = []  # Lista para almacenar las definiciones de funciones
+    clean_functions = []  # Lista para almacenar las definiciones de funciones limpias
+    regex = []  # Lista para almacenar las expresiones regulares
+    clean_regex_expression = []  # Lista para almacenar las expresiones regulares limpias
+    reserved_word = ""  # Palabra reservada temporal
 
     # Abrir el archivo y leerlo línea por línea
     with open(yalex_file, "r") as yal:
@@ -25,9 +25,9 @@ def read_yalex(yalex_file):
                         else:
                             regex.append(temporary_reserved_word)
             if line.startswith("let"):
-                functions.append(line[4:-1])
+                functions.append(line[4:-1])  # Agregar la definición de la función a la lista de funciones
             if line.startswith("rule"):
-                active_elements = True
+                active_elements = True  # Activar la bandera para procesar las expresiones regulares
 
     # Procesamiento de expresiones regulares
     for x in range(len(regex)):
@@ -40,9 +40,11 @@ def read_yalex(yalex_file):
             if "(*" in temporary_reserved_word:
                 temporary_reserved_word = temporary_reserved_word[:-2]
                 break
-        
+
+        # Actualizar la lista regex con el valor modificado
         regex[x] = temporary_reserved_word
 
+    # Procesamiento de expresiones regulares
     clean_regex_expression = []
     for x in regex:
         if len(x) != 0:
@@ -52,11 +54,11 @@ def read_yalex(yalex_file):
 
     # Procesamiento de funciones
     for f in functions:
-        deletable_array = []
-        temp_expression = []
+        deletable_array = []  # Lista para almacenar los tokens de la función
+        temp_expression = []  # Lista temporal para almacenar la definición de la función
         nombre, definition = f.split("=")
-        nombre = nombre.strip()
-        definition = definition.strip()
+        nombre = nombre.strip()  # Limpiar el nombre de la función
+        definition = definition.strip()  # Limpiar la definición de la función
         temp_expression.append(nombre)
         reserved_word = ""
         if definition[0] == "[":
@@ -147,6 +149,12 @@ def read_yalex(yalex_file):
                 if token_actual.count("'") == 2:
                     if "[" not in token_actual:
                         token_actual = token_actual[1:-1]
+                        if token_actual == '.digits':
+                            tokens.append('.')
+                            tokens.append('·')
+                            tokens.append('digits')
+                        elif token_actual == 'E':
+                            token_actual = ord(token_actual)  # Convertir 'E' a ASCII
                         tokens.append(token_actual)
                         token_actual = ""
                 if char in ("(", ")", "*", "?", "+", "|", "·"):
