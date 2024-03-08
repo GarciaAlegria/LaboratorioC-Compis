@@ -9,7 +9,7 @@ def read_yalex(yalex_file):
     # Abrir el archivo y leerlo línea por línea
     with open(yalex_file, "r") as yal:
         active_elements = False
-        for line in yal:
+        for line_number, line in enumerate(yal, start=1):
             # Procesamiento de las líneas del archivo
             if active_elements:
                 temporary_reserved_word = ""
@@ -25,9 +25,18 @@ def read_yalex(yalex_file):
                         else:
                             regex.append(temporary_reserved_word)
             if line.startswith("let"):
+                if "=" not in line:
+                    raise ValueError(f"Error en línea {line_number}: Falta el símbolo '=' en la declaración 'let'")
+                elif len(line.split("=")) != 2:
+                    raise ValueError(f"Error en línea {line_number}: Declaración 'let' incorrecta")
+                elif len(line.split("=")[1].strip()) == 0:
+                    raise ValueError(f"Error en línea {line_number}: La declaración 'let' está vacía")
                 functions.append(line[4:-1])  # Agregar la definición de la función a la lista de funciones
             if line.startswith("rule"):
                 active_elements = True  # Activar la bandera para procesar las expresiones regulares
+
+    if active_elements and not regex:  # Verificar si se espera una expresión regular pero no se encuentra ninguna
+        raise ValueError("No se encontraron expresiones regulares después de 'rule'")
 
     # Procesamiento de expresiones regulares
     for x in range(len(regex)):
