@@ -6,11 +6,30 @@ def read_yalex(yalex_file):
     clean_regex_expression = []  # Lista para almacenar las expresiones regulares limpias
     reserved_word = ""  # Palabra reservada temporal
 
+    # Revisar errores de cierre de corchetes
+    def check_brackets(line, line_number):
+        if line.count("[") != line.count("]"):
+            raise ValueError(f"Error en línea {line_number}: Error de cierre de corchetes")
+
+    # Revisar errores de comillas simples y dobles
+    def check_quotes(line, line_number):
+        if line.count("'") % 2 != 0 or line.count('"') % 2 != 0:
+            raise ValueError(f"Error en línea {line_number}: Error de comillas")
+
+    # Sección de rule vacía
+    def check_empty_rule(line, line_number):
+        if line.startswith("rule") and not any(c.isalnum() for c in line):
+            raise ValueError(f"Error en línea {line_number}: Sección 'rule' vacía")
+
     # Abrir el archivo y leerlo línea por línea
     with open(yalex_file, "r") as yal:
         active_elements = False
         for line_number, line in enumerate(yal, start=1):
             # Procesamiento de las líneas del archivo
+            check_brackets(line, line_number)
+            check_quotes(line, line_number)
+            check_empty_rule(line, line_number)
+            
             if active_elements:
                 temporary_reserved_word = ""
                 # Leer cada carácter de la línea
