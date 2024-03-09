@@ -176,6 +176,7 @@ def read_yalex(yalex_file):
                     if char == '_':
                         for i in range(32, 127):
                             tokens.append(i)
+                            tokens.append("|")
                     token_actual += char
             if token_actual:
                 tokens.append(token_actual)

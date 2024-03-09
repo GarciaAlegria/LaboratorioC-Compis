@@ -3,7 +3,7 @@ import shuntingyard as sy
 from arbol import SyntacticTree
 
 def main():
-    yalex_file = 'slr-2.yal' 
+    yalex_file = 'slr-4.yal' 
     content = read.read_yalex(yalex_file)
     if content:
         print("====================================================")
